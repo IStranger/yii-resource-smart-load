@@ -25,7 +25,7 @@ Note:
 + Cannot prevent reload inline blocks of js/css (try to eliminate in the new version).
 + Increases the traffic between client and server (extension uses cookie and http headers).
 This is especially important for sites with a large number of included resource files.
-This can be adjusted by changing the hash method: <b>crc32b</b> takes less size than <b>md5</b> (see. option of extension).
+This can be adjusted by changing the hash method: <b>crc32b</b> takes less size than <b>md5</b> (see option of extension).
 + Extension does not work if the user has enabled filtering of http headers (for example, on company's proxy),
 and browser not to accept cookies. However, we believe the probability of such events is low.
 
@@ -37,6 +37,7 @@ and browser not to accept cookies. However, we believe the probability of such e
 ```php
 // application components
 'components' => array(
+    // ...
     'clientScript' => array(
         'class' => 'ext.resourcesmartload.RSmartLoadClientScript',
 
@@ -49,6 +50,7 @@ and browser not to accept cookies. However, we believe the probability of such e
         // Activate "smart" disabling of resources on all pages
         // 'activateOnAllPages' => true // default = true
     )
+    // ...
 ),
 ```
 
