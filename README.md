@@ -1,4 +1,4 @@
-# Extension for prevent reloading scripts (on AJAX request)
+# Extension to prevent reloading scripts (on AJAX request)
 
 This extension for yii 1.1.x prevent reload resources, which already exist on client.
 
@@ -10,10 +10,12 @@ This extension for yii 1.1.x prevent reload resources, which already exist on cl
 
 Note:
 
-    The extension is under active development and requires a good of refactoring (especially in the client area).
-    But before use on production version of your website, you must carefully test it (the tests will come later).
-    It is also planned deep change of algorithm that eliminates many of the limitations of this extension (see below).
-    Therefore it is possible instead of refactoring most of the code will be deleted.
+    The extension is under active development and requires a good of refactoring
+    (especially in the client area). This extension works well, but before use
+    on production version of your website, you must carefully test it (the tests
+    will come later). It is also planned deep change of algorithm that eliminates
+    many of the limitations of this extension (see below). Therefore it is
+    possible instead of refactoring most of the code will be deleted.
 
 ## Features
 
@@ -22,12 +24,13 @@ Note:
 
 ## Limitations
 
-+ Cannot prevent reload inline blocks of js/css (try to eliminate in the new version).
-+ Increases the traffic between client and server (extension uses cookie and http headers).
++ Cannot prevent reload inline blocks of js/css (we will try to eliminate in the new version).
++ Increases incoming traffic (from client to server), because extension uses cookie and http headers.
 This is especially important for sites with a large number of included resource files.
 This can be adjusted by changing the hash method: <b>crc32b</b> takes less size than <b>md5</b> (see option of extension).
+In addition it should be remembered that the size of the cookie is limited (in browser).
 + Extension does not work if the user has enabled filtering of http headers (for example, on company's proxy),
-and browser not to accept cookies. However, we believe the probability of such events is low.
+and browser not to accept cookies. However, we assume the probability of such events is low.
 
 ## Usage
 
@@ -57,7 +60,7 @@ and browser not to accept cookies. However, we believe the probability of such e
 
 ## Similar extensions
 
-To prevent reloading scripts you can use <a href="https://github.com/nlac/nlsclientscript">nlsclientscript</a>
+To prevent reloading scripts you can use <a href="https://github.com/nlac/nlsclientscript" target="_blank">nlsclientscript</a>
 
 However, there are a few differences:
 

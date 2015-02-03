@@ -3,7 +3,7 @@
     var resourceSmartLoad = {
 
         HASH_METHOD_CRC32: 'crc32b',
-        HASH_METHOD_MD5: 'md5',
+        HASH_METHOD_MD5  : 'md5',
 
         /**
          * Is already initialized (for prevent repeated initializing)
@@ -34,12 +34,12 @@
              * Current hashing method (for resource names)
              * @type {String}
              */
-            hashMethod: null,
+            hashMethod        : null,
             /**
              * Enable log of registered/disabled resources
              * @type {Boolean}
              */
-            enableLog: null,
+            enableLog         : null,
             /**
              * Activates "smart" disabling of resources on all pages
              * @type {Boolean}
@@ -55,7 +55,7 @@
          * @see getResourcesHashList
          * @see addResource
          */
-        resources: [],
+        resources: {},
 
         /**
          * Returns loaded resource with given hash
@@ -66,16 +66,8 @@
          */
         getResourceByHash: function (hash) {
             var app = this;
-            var result = null;
 
-            $.each(app.resources, function (key, resource) {
-                // console.log('getResourceByHash >> key, resource.hash, hash = ', resource.hash, hash);
-                if (resource.hash === hash) {
-                    result = resource.resource;
-                    return false;
-                }
-            });
-            return result;
+            return app.resources[hash] ? app.resources[hash] : null;
         },
 
         /**
@@ -87,9 +79,11 @@
         getResourcesHashList: function () {
             var app = this;
 
-            return app.resources.map(function (resource) {
-                return resource.hash;
+            var result = [];
+            $.each(app.resources, function (hash, resource) {
+                result.push(resource.hash);
             });
+            return result;
         },
 
         /**
@@ -101,14 +95,15 @@
          */
         addResource: function (resource, comment) {
             var app = this;
-            var isAlreadyLoaded = Boolean(app.getResourceByHash(app.hashString(resource)));
+            var hash = app.hashString(resource);
+            var isAlreadyLoaded = Boolean(app.getResourceByHash(hash));
 
             if (!isAlreadyLoaded) {
-                app.resources.push({
+                app.resources[hash] = {
                     resource: resource,
-                    hash: app.hashString(resource),
-                    source: comment
-                });
+                    hash    : hash,
+                    source  : comment
+                };
             }
 
             app.log('addResource = ', resource, !isAlreadyLoaded ? ' ...added' : ' ...skipped');
@@ -134,7 +129,7 @@
 
                     // update of "app.resources" after all ajax requests
                     $.ajaxSetup({
-                        global: true,
+                        global    : true,
                         dataFilter: function (data, type) { // console.dir({ arguments: arguments, self: this });
                             if (!type || (type == "html") || (type == "text")) {
                                 var matches;
@@ -143,7 +138,7 @@
                                     // script files (extracted attribute "src")
                                     regExpScriptFiles: /\<script[^\<\>]*src[\s]*=[\s]*(?:"|')([^\<\>"']+)(?:"|')[^\<\>]*\>/g,
                                     // CSS, fonts, and other link resources (extracted attribute "href")
-                                    regExpLinkFiles: /\<link[^\<\>]*href[\s]*=[\s]*(?:"|')([^\<\>"']+)(?:"|')[^\<\>]*\>/g
+                                    regExpLinkFiles  : /\<link[^\<\>]*href[\s]*=[\s]*(?:"|')([^\<\>"']+)(?:"|')[^\<\>]*\>/g
                                 };
 
                                 $.each(regExps, function (key, regExp) {
@@ -633,7 +628,7 @@
          * @param {Number} number   Source number
          * @returns {String}        Representation of HEX-numbers
          */
-        dechex: function (number) {
+        dechex   : function (number) {
             if (number < 0) {
                 number = 0xFFFFFFFF + number + 1;
             }
@@ -642,7 +637,7 @@
 
         // simplified from: https://github.com/epeli/underscore.string/blob/master/lpad.js
         //                  https://github.com/epeli/underscore.string/blob/master/pad.js
-        lpad: function (str, length, padStr) {
+        lpad     : function (str, length, padStr) {
             var fn = this;
 
             length = ~~length;
