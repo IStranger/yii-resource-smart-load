@@ -10,8 +10,8 @@ This extension for yii 1.1.x prevent reload resources, which already exist on cl
 
 Note:
 
-    The extension is under active development and requires a good of refactoring
-    (especially in the client area). This extension works well, but before use
+    The extension is under active development and requires a good refactoring
+    (especially client side). This extension works well, but before use
     on production version of your website, you must carefully test it (the tests
     will come later). It is also planned deep change of algorithm that eliminates
     many of the limitations of this extension (see below). Therefore it is
@@ -27,9 +27,9 @@ Note:
 + Cannot prevent reload inline blocks of js/css (we will try to eliminate in the new version).
 + Increases incoming traffic (from client to server), because extension uses cookie and http headers.
 This is especially important for sites with a large number of included resource files.
-This can be adjusted by changing the hash method: <b>crc32b</b> takes less size than <b>md5</b> (see option of extension).
+This can be adjusted by changing the hash method: <b>crc32b</b> takes less size than <b>md5</b> (see options of extension).
 In addition it should be remembered that the size of the cookie is limited (in browser).
-+ Extension does not work if the user has enabled filtering of http headers (for example, on company's proxy),
++ Extension does not work if the user has enabled filtering of http headers (for example, on the corporate proxy),
 and browser not to accept cookies. However, we assume the probability of such events is low.
 
 ## Usage
