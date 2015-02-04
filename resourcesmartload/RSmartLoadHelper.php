@@ -5,10 +5,10 @@
  * Contains common helper functions for data access/array manipulation/request variables reading.
  *
  * @author  G.Azamat <m@fx4web.com>
- * @link    http://www.fx4.ru/
- * @link    http://github.com/IStranger/yiiResourceSmartLoad
+ * @link    http://fx4.ru/
+ * @link    https://github.com/IStranger/yii-resource-smart-load
  * @version 0.1 (2015-02-02)
- * @since   1.1.15
+ * @since   1.1.14
  */
 class RSmartLoadHelper
 {

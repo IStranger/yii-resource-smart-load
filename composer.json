@@ -1,0 +1,24 @@
+{
+    "name"       : "IStranger/resourcesmartload",
+    "description": "The extension for prevent reload resources, which already exist on client",
+    "version"    : "0.1.0-beta",
+    "keywords"   : ["resources", "prevent reload", "scripts", "resource extension"],
+    "homepage"   : "https://github.com/IStranger/yii-resource-smart-load#readme",
+    "type"       : "library",
+    "license"    : "MIT",
+    "authors"    : [
+        {
+            "name"    : "G.Azamat",
+            "email"   : "m@fx4web.com",
+            "homepage": "http://fx4.ru/",
+            "role"    : "Developer"
+        }
+    ],
+    "support"    : {
+        "issues": "https://github.com/IStranger/yii-resource-smart-load/issues",
+        "source": "https://github.com/IStranger/yii-resource-smart-load"
+    },
+    "require"    : {
+        "php"     : ">=5.4.0"
+    }
+}
