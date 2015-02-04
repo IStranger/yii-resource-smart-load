@@ -1,7 +1,4 @@
 <?php
-
-Yii::import('ext.resourcesmartload.*'); // todo refactor import of helper class
-
 /**
  * RSmartLoadClientScript class file.
  *
@@ -46,6 +43,9 @@ class RSmartLoadClientScript extends CClientScript
 
     public function init()
     {
+        $this->_setRootAliasIfUndefined();
+        Yii::import('resourcesmartload.*');
+
         $this->_publishExtensionResources();
 
         if ($this->activateOnAllPages) {
@@ -323,6 +323,16 @@ class RSmartLoadClientScript extends CClientScript
     {
         if ($this->enableLog) {
             YiiBase::log($msg . PHP_EOL . var_export($resources, true), CLogger::LEVEL_TRACE, 'resourceSmartLoad');
+        }
+    }
+
+    /**
+     * Sets alias of extension path (if not defined manually)
+     */
+    private function _setRootAliasIfUndefined()
+    {
+        if (Yii::getPathOfAlias('resourcesmartload') === false) {
+            Yii::setPathOfAlias('resourcesmartload', realpath(dirname(__FILE__)));
         }
     }
 } 
