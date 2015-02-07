@@ -7,7 +7,7 @@
  * @author  G.Azamat <m@fx4web.com>
  * @link    http://fx4.ru/
  * @link    https://github.com/IStranger/yii-resource-smart-load
- * @version 0.1 (2015-02-02)
+ * @version 0.11 (2015-02-07)
  * @since   1.1.14
  */
 class RSmartLoadHelper
@@ -33,12 +33,14 @@ class RSmartLoadHelper
     }
 
     /**
-     * Return array filter by $callback
+     * Filters values of given array by $callback.
+     * If $callback function return true, current element included in result array
+     *
      * <code>
      * // Select only elements with height>$data
-     * $items=A::filter($a,
-     *      function($key,$val,$data){{return $val['height']>$data;},
-     *      $data)
+     * $items = A::filter($a, function($key, $val, $data){{
+     *      return $val['height'] > $data;
+     * }, $data);
      * </code>
      *
      * @param array    $array
@@ -118,7 +120,8 @@ class RSmartLoadHelper
      * By default, server stores these headers in {@link $_SERVER}.
      *
      * @param string $name            Name of header (case insensitive)
-     * @param string $webserverPrefix Prefix of header names in array $_SERVER (it depends on the web server configuration)
+     * @param string $webserverPrefix Prefix of header names in array $_SERVER (it depends on the web server
+     *                                configuration)
      * @return string                 Value of given HTTP header. If not found = null
      */
     private static function _getHttpHeader($name, $webserverPrefix = 'HTTP_')
@@ -129,7 +132,8 @@ class RSmartLoadHelper
 
     /**
      * Returns cookie value (by default attribute "value").<br/>
-     * To access the values of other attributes, use parameter $attribute (possible value = name, value, domain, path, expire, secure)
+     * To access the values of other attributes, use parameter $attribute (possible value = name, value, domain, path,
+     * expire, secure)
      *
      * @param string $cookieName Cookie name
      * @param mixed  $default    Default value, which returned if given cookie not found

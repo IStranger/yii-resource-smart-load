@@ -52,6 +52,9 @@ and browser not to accept cookies. However, we assume the probability of such ev
 
         // Activate "smart" disabling of resources on all pages
         // 'activateOnAllPages' => true // default = true
+        
+        // List of resources, that always should be loaded on client (by name, hash, or full URL)
+        // 'alwaysReloadableResources' => array('jquery.yiiactiveform.js')  // default = array()
     )
     // ...
 ),

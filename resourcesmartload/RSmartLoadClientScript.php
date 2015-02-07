@@ -1,11 +1,12 @@
 <?php
+
 /**
  * RSmartLoadClientScript class file.
  *
  * @author  G.Azamat <m@fx4web.com>
  * @link    http://fx4.ru/
  * @link    https://github.com/IStranger/yii-resource-smart-load
- * @version 0.1 (2015-02-02)
+ * @version 0.11 (2015-02-07)
  * @since   1.1.14
  */
 class RSmartLoadClientScript extends CClientScript
@@ -15,8 +16,15 @@ class RSmartLoadClientScript extends CClientScript
      */
     const JS_GLOBAL_OBJ_PATH = 'window.yiiResourceSmartLoad';
 
+    /**
+     * Path alias, which used for import {@link Yii::import} of extension classes
+     */
+    const PATH_ALIAS = 'resourcesmartload';
+
     const HASH_METHOD_CRC32 = 'crc32b';
     const HASH_METHOD_MD5 = 'md5';
+
+    const EVENT_AFTER_UNIFY_SCRIPTS = 'onAfterUnifyScripts';
 
     /**
      * @var string[] Hashing methods for the resource file name
@@ -40,11 +48,17 @@ class RSmartLoadClientScript extends CClientScript
      */
     public $activateOnAllPages = true;
 
+    /**
+     * @var string[] List of resources, that always should be loaded on client. Each resource can be presented: <br/>
+     *               - resource file: as <b>hash</b>, or <b>full URL</b>, or <b>basename</b>.<br/>
+     *               - resource inline block: as <b>hash</b>, or <b>resource content</b>.
+     */
+    public $alwaysReloadableResources = array();
 
     public function init()
     {
-        $this->_setRootAliasIfUndefined();
-        Yii::import('resourcesmartload.*');
+        $this->_setExtensionPathAliasIfUndefined();
+        Yii::import(self::PATH_ALIAS . '.*');
 
         $this->_publishExtensionResources();
 
@@ -60,138 +74,14 @@ class RSmartLoadClientScript extends CClientScript
     }
 
     /**
-     * Returns list of hashes of resources, which already loaded on client.
-     * This list is sent every ajax-request in client variable "resourcesList"
-     * (see. resourceSmartLoad.getLoadedResources() in resource_smart_load.js)
-     *
-     * @return array  List of hashes (hashed full name of the resource).If "client" variable not found, returns = array()
-     * @see resourcesmartload/resource_smart_load.js
-     */
-    public function getLoadedResources()
-    {
-        $resourcesList = RSmartLoadHelper::getClientVar('resourcesList');
-        return $resourcesList ? json_decode($resourcesList) : array();
-    }
-
-    /**
-     * Returns plain array of registered resources (single files and from packets)
-     *
-     * @param array $type Types of resources array('js', 'css')
-     * @return array
-     */
-    public function getRegisteredResources($type = array('js', 'css'))
-    {
-        // $this->scripts; $this->css;  - inline code blocks
-
-        $resultList = array();
-        // JS scripts
-        if (in_array('js', $type)) {
-            foreach ($this->scriptFiles as $pos => $filesGroup) {
-                $resultList = array_merge($resultList, array_values($filesGroup));
-            }
-            foreach ($this->coreScripts as $packageName => $package) {
-                $resultList = array_merge($resultList, $this->getPackageFileList($packageName, $package, 'js'));
-            }
-        }
-
-        // CSS files
-        if (in_array('css', $type)) {
-            foreach ($this->coreScripts as $packageName => $package) {
-                $resultList = array_merge($resultList, $this->getPackageFileList($packageName, $package, 'css'));
-            }
-            $resultList = array_merge($resultList, array_keys($this->cssFiles)); // Unlike JS-scripts for CSS does not specify the position of including.
-        }
-        return $resultList;
-    }
-
-    /**
-     * Returns plain array of resources from given packet (builds full paths taking into account baseUrl) <br/>
-     * The package must be REGISTERED, otherwise method returns not full path.
-     * If the package is registered, method returns the full/assets path
-     * (if necessary, the package will be published assetsManager).
-     *
-     * @param array  $packageName Name of package
-     * @param array  $packageSpec Description {of} package, see {@link CClientScript::packages}
-     * @param string $fileType    Type of files: 'css' or 'js'
-     * @return array List of css/js files. If not exist, returns = array()
-     * @see CClientScript::getPackageBaseUrl
-     * @see CClientScript::renderCoreScripts
-     */
-    protected function getPackageFileList($packageName, $packageSpec, $fileType)
-    {
-        $baseUrl = $this->getPackageBaseUrl($packageName);
-        return RSmartLoadHelper::createByFn(RSmartLoadHelper::value($packageSpec, $fileType, array()),
-            function ($key, $value) use ($baseUrl) {
-                return array($key, ($baseUrl ? $baseUrl . '/' : '') . $value);
-            }
-        );
-    }
-
-    /**
-     * Disables loading (on client) of given files: <br/>
-     * &mdash; Disables certain file by <b>full URL</b> or by <b>basename</b>.
-     *         For example, "widgets.js" disables loading all resources with the same name, independently from  their paths.
-     * &mdash; Disables all resource files by type, if given '*.css' or '*.js'
-     *         (see {@link RSmartLoadClientScript::disableAllResources}) <br/><br/>
-     * <b>ATTENTION!</b> Call this method disables loading <u><b>given</b></u> resources,
-     * even if they will registered after calling this method.
-     *
-     * @param string[] $filePaths List of file paths (or their names without paths and slashes).
-     * @see RSmartLoadClientScript::disableLoadedResources
-     * @see RSmartLoadClientScript::disableAllResources
-     * @see RSmartLoadClientScript::_disableResources
-     */
-    public function disableResources($filePaths)
-    {
-        $self = $this;
-        $this->attachEventHandler('onAfterUnifyScripts', function ($event) use ($self, $filePaths) {
-            $self->_disableResources($filePaths);
-        });
-    }
-
-    /**
-     * Disables loading of all resource files. <br/><br/>
-     * <b>ATTENTION!</b> Call this method disables loading <u><b>all</b></u> resources,
-     * even if they will registered after calling this method.
-     *
-     * @see RSmartLoadClientScript::disableResources
-     * @see RSmartLoadClientScript::disableLoadedResources
-     * @see RSmartLoadClientScript::_disableResources
-     */
-    public function disableAllResources()
-    {
-        $this->disableResources(array('*.js', '*.css'));
-    }
-
-    /**
-     * Disables loading of resource files, which already loaded on client. <br/>
-     * Used at AJAX requests. List of resource hashes obtained from "client" variable {@link Request::getClientVar}. <br/><br/>
-     * <b>ATTENTION!</b> Call this method disables loading <u><b>"client"</b></u> resources,
-     * even if they will registered after calling this method.
-     *
-     * @see RSmartLoadClientScript::disableResources
-     * @see RSmartLoadClientScript::disableAllResources
-     * @see RSmartLoadClientScript::_disableResources
-     * @see frontend/www/resources/js/tvil.js
-     */
-    public function disableLoadedResources()
-    {
-        $self = $this;
-        $this->attachEventHandler('onAfterUnifyScripts', function ($event) use ($self) {
-            $self->_disableLoadedResources();
-        });
-    }
-
-
-    /**
-     * Raises event "AfterUnifyScripts". <br/>
+     * Raises event {@link RSmartLoadClientScript::EVENT_AFTER_UNIFY_SCRIPTS}. <br/>
      * Unification of scripts executed in the method {@link RSmartLoadClientScript::unifyScripts}.
      * In this time moment all resources is extracted to variables {@link cssFiles} and {@link scriptFiles},
      * executed script remap {@link remapScripts}, from these arrays deleted duplicate elements.
      */
     protected function afterUnifyScripts()
     {
-        if ($this->hasEventHandler('onAfterUnifyScripts')) {
+        if ($this->hasEventHandler(self::EVENT_AFTER_UNIFY_SCRIPTS)) {
             $this->onAfterUnifyScripts(
                 new CEvent($this, array(
                     'type' => 'core',
@@ -209,39 +99,115 @@ class RSmartLoadClientScript extends CClientScript
      * @param CEvent $event
      * @see RSmartLoadClientScript::beforeRenderScripts
      */
-    public function onAfterUnifyScripts($event)
+    protected function onAfterUnifyScripts($event)
     {
-        $this->raiseEvent('onAfterUnifyScripts', $event);
+        $this->raiseEvent(self::EVENT_AFTER_UNIFY_SCRIPTS, $event);
     }
 
     /**
-     * Disables loading of given files of resources from arrays {@link cssFiles} and {@link scriptFiles}. <br/>
-     * &mdash; Disables certain file by <b>full URL</b> or by <b>basename</b>.
-     *         For example, "widgets.js" disables loading all resources with the same name, independently from their paths.
-     * &mdash; Disables all resource files by type, if given '*.css' or '*.js'
-     *         (see {@link RSmartLoadClientScript::disableAllResources}) <br/><br/>
-     * <b>ATTENTION!</b> This method cannot disable resources from packets, therefore it should be used,
-     * when all packets extracted to named arrays (before script remap or before/after unification of scripts).
+     * Returns list of hashes of resources, which already loaded on client.
+     * This list is sent every ajax-request in "client" variable "resourcesList" {@link RSmartLoadHelper::getClientVar}
+     * (see. resourceSmartLoad.getLoadedResources() in resource_smart_load.js)
      *
-     * @param string $filePaths List of file paths (or their names without paths and slashes).
+     * @return string[]     List of hashes (hashed full name of the resource).
+     *                      If "client" variable not found, returns empty array()
+     * @see resourcesmartload/resource_smart_load.js
      */
-    private function _disableResources($filePaths)
+    public function getLoadedResourcesHashes()
     {
-        $filterFunc = function ($url, $value) use ($filePaths) {
-            return !in_array($url, $filePaths) && !in_array(basename($url), $filePaths);
-        };
+        $resourcesList = RSmartLoadHelper::getClientVar('resourcesList');
+        return $resourcesList
+            ? json_decode($resourcesList)
+            : array();
+    }
 
-        // CSS:
-        if (in_array('*.css', $filePaths)) {
+    /**
+     * Disables loading of all resource files.
+     *
+     * <b>ATTENTION!</b> Calling this method disables loading <u><b>all</b></u> resources,
+     * even if they will registered after calling this method.
+     *
+     * @see RSmartLoadClientScript::disableLoadedResources
+     */
+    public function disableAllResources()
+    {
+        $self = $this;
+        $this->attachEventHandler(self::EVENT_AFTER_UNIFY_SCRIPTS, function ($event) use ($self) {
+            $self->excludeCSSFiles('*.css');
+            $self->excludeJSFiles('*.js');
+            //$self->css = array();         // todo add disabling of inline blocks
+            //$self->scripts = array();
+        });
+    }
+
+    /**
+     * Disables loading of resource files, which already loaded on client. <br/>
+     * Used at AJAX requests. List of resource hashes obtained from "client" variable {@link Request::getClientVar}.
+     *
+     * <b>ATTENTION!</b> Calling this method disables loading <u><b>"client"</b></u> resources,
+     * even if they will registered after calling this method.
+     *
+     * @see RSmartLoadClientScript::disableAllResources
+     */
+    public function disableLoadedResources()
+    {
+        $self = $this;
+        $this->attachEventHandler(self::EVENT_AFTER_UNIFY_SCRIPTS, function ($event) use ($self) {
+            $hashList = $self->getLoadedResourcesHashes();
+            $self->excludeCSSFiles($hashList);
+            $self->excludeJSFiles($hashList);
+            //$self->css = array();             // todo add disabling of inline blocks
+            //$self->scripts = array();
+        });
+    }
+
+
+    /**
+     * Excludes from array {@link cssFiles} (registered CSS files) given files of resources. <br/>
+     *
+     * - Excludes certain file by <b>hash</b>, or by <b>full URL</b>, or by <b>basename</b>.<br/>
+     *   For example, "widgets.css" disables loading all resources with the same name, independently from their paths.
+     * - Excludes all resource files, if given '*.css'
+     *
+     * <b>ATTENTION!</b> This method cannot exclude resources from registered packets, therefore it should be used,
+     * when all packets extracted to target array (before script remap or before/after unification of scripts).
+     *
+     * @param string $excludeList List of resource hashes, or file URLs, or their names without paths and slashes.
+     */
+    protected function excludeCSSFiles($excludeList)
+    {
+        if (in_array('*.css', $excludeList)) {
             $this->cssFiles = array();
         } else {
+            $self = $this;
+            $filterFunc = function ($url, $value) use ($self, $excludeList) {
+                return $self->_shouldBeLoadedFile($url, $excludeList);
+            };
             $this->cssFiles = RSmartLoadHelper::filterByFn($this->cssFiles, $filterFunc);
         }
+    }
 
-        // JS:
-        if (in_array('*.js', $filePaths)) {
+    /**
+     * Excludes from array {@link scriptFiles} (registered JS files) given files of resources. <br/>
+     *
+     * - Excludes certain file by <b>hash</b>, or by <b>full URL</b>, or by <b>basename</b>.<br/>
+     *   For example, "widgets.js" disables loading all resources with the same name, independently from their paths.
+     * - Excludes all resource files, if given '*.js'
+     *
+     * <b>ATTENTION!</b> This method cannot exclude resources from registered packets, therefore it should be used,
+     * when all packets extracted to target array (before script remap or before/after unification of scripts).
+     *
+     * @param string[] $excludeList List of resource hashes, or file URLs, or their names without paths and slashes.
+     */
+    protected function excludeJSFiles($excludeList)
+    {
+        if (in_array('*.js', $excludeList)) {
             $this->scriptFiles = array();
         } else {
+            $self = $this;
+            $filterFunc = function ($url, $value) use ($self, $excludeList) {
+                return $self->_shouldBeLoadedFile($url, $excludeList);
+            };
             foreach ($this->scriptFiles as $position => $scriptFiles) {
                 $this->scriptFiles[$position] = RSmartLoadHelper::filterByFn($this->scriptFiles[$position], $filterFunc);
             }
@@ -249,33 +215,19 @@ class RSmartLoadClientScript extends CClientScript
     }
 
     /**
-     * Disables loading of resource files, which already loaded on client. <br/>
-     * Used at AJAX requests. List of resource hashes obtained from "client" variable {@link Request::getClientVar}. <br/><br/>
-     * <b>ATTENTION!</b> This method cannot disable resources from packets, therefore it should be used,
-     * when all packets extracted to named arrays (before script remap or before/after unification of scripts).
+     * Checks, should be loaded given resource file
      *
-     * @return array  Associative array of files, which has been excluded from registered files
-     *                (key - name of registered file, value - full URL taking into account CClientScript::scriptMap)
-     * @see RSmartLoadClientScript::_disableResources
-     * @see RSmartLoadClientScript::disableAllResources
-     * @see CClientScript::scriptMap
-     * @see frontend/www/resources/js/tvil.js
+     * @param string   $resource
+     * @param string[] $excludeList
+     * @return bool
      */
-    private function _disableLoadedResources()
+    private function _shouldBeLoadedFile($resource, $excludeList)
     {
-        $loadedResources = $this->getLoadedResources();
-        $registeredResources = $this->getRegisteredResources();
+        $possibleEntries = array($resource, $this->_hashString($resource), basename($resource));
 
-        $excludeFiles = array();
-        foreach ($registeredResources as $resource) {
-            $hash = $this->_hashString($resource);
-            if (in_array($hash, $loadedResources)) {
-                $excludeFiles[$resource] = $resource;
-            }
-        }
-        $this->_log(array('loaded' => $loadedResources, 'registeredResources' => $registeredResources, 'excluded' => $excludeFiles));
-        $this->_disableResources($excludeFiles);
-        return $excludeFiles;
+        return
+            (count(array_intersect($possibleEntries, $this->alwaysReloadableResources)) > 0) || // is "always reloadable"
+            (count(array_intersect($possibleEntries, $excludeList)) === 0);          // is not contained in $excludeList
     }
 
     /**
@@ -303,8 +255,8 @@ class RSmartLoadClientScript extends CClientScript
 
         // Initialization of client side (+ extension options export to client side)
         $extensionOptionsJson = json_encode(array(
-            'hashMethod' => $this->hashMethod,
-            'enableLog' => $this->enableLog,
+            'hashMethod'         => $this->hashMethod,
+            'enableLog'          => $this->enableLog,
             'activateOnAllPages' => $this->activateOnAllPages,
         ));
         $this->registerScript('resourceSmartLoadInitExtension',
@@ -329,10 +281,10 @@ class RSmartLoadClientScript extends CClientScript
     /**
      * Sets alias of extension path (if not defined manually)
      */
-    private function _setRootAliasIfUndefined()
+    private function _setExtensionPathAliasIfUndefined()
     {
-        if (Yii::getPathOfAlias('resourcesmartload') === false) {
-            Yii::setPathOfAlias('resourcesmartload', realpath(dirname(__FILE__)));
+        if (Yii::getPathOfAlias(self::PATH_ALIAS) === false) {
+            Yii::setPathOfAlias(self::PATH_ALIAS, realpath(dirname(__FILE__)));
         }
     }
 } 
