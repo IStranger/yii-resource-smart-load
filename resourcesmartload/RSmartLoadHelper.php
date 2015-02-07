@@ -13,26 +13,6 @@
 class RSmartLoadHelper
 {
     /**
-     * Evaluates the value of the specified attribute for the given object or array.
-     *
-     * @param mixed  $object       This can be either an object or an array.
-     * @param string $attribute    the attribute name
-     * @param mixed  $defaultValue the default value to return when the attribute does not exist.
-     * @return mixed the attribute value.
-     */
-    public static function value($object, $attribute, $defaultValue = null)
-    {
-        if (isset($object->$attribute)) {
-            $object = $object->$attribute;
-        } elseif (isset($object[$attribute])) {
-            $object = $object[$attribute];
-        } else {
-            return $defaultValue;
-        }
-        return $object;
-    }
-
-    /**
      * Filters values of given array by $callback.
      * If $callback function return true, current element included in result array
      *
@@ -127,7 +107,7 @@ class RSmartLoadHelper
     private static function _getHttpHeader($name, $webserverPrefix = 'HTTP_')
     {
         $name = str_replace(array('-', ' '), '_', $name);
-        return static::value($_SERVER, mb_strtoupper($webserverPrefix . $name));
+        return CHtml::value($_SERVER, mb_strtoupper($webserverPrefix . $name));
     }
 
     /**
@@ -144,7 +124,7 @@ class RSmartLoadHelper
      */
     private static function _getCookieValue($cookieName, $default = null, $attribute = 'value')
     {
-        return static::value(Yii::app()->request->cookies, $cookieName . '.' . $attribute, $default);
+        return CHtml::value(Yii::app()->request->cookies, $cookieName . '.' . $attribute, $default);
     }
 
     /**
