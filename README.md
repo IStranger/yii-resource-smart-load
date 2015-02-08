@@ -77,7 +77,7 @@ At the subsequent AJAX requests already loaded CSS inline blocks (or CSS files) 
 therefore, in case you have problems with CSS styles is recommended to set option:
 
 ```php
-    'resourceTypes' => array('jsFile', 'jsInline'), // or  => array('jsInline')
+    'resourceTypes' => array('jsFile', 'jsInline'), // or  => array('jsFile')
 ```
 
 ### Advanced use case
@@ -133,32 +133,59 @@ yiiResourceSmartLoad.resources =
     "55eb35cb": {
       "resource": "/test_yii/assets/62fbda6e/jquery.js",
       "hash": "55eb35cb",
-      "source": "2015-02-08 23:14:30,\r\nGET,\r\nurl = /test_yii/index.php?r=site/ajaxForm,\r\nreferrer = http://test.dev/test_yii/index.php?r=site/contact"
+      "source": "2015-02-08 23:14:30,
+		GET,
+		url = /test_yii/index.php?r=site/ajaxForm,
+		referrer = http://test.dev/test_yii/index.php?r=site/contact"
     },
     "fd425af9": {
       "resource": "/test_yii/assets/62fbda6e/jquery.maskedinput.js",
       "hash": "fd425af9",
-      "source": "2015-02-08 23:14:30,\r\nGET,\r\nurl = /test_yii/index.php?r=site/ajaxForm,\r\nreferrer = http://test.dev/test_yii/index.php?r=site/contact"
+      "source": "2015-02-08 23:14:30,
+		GET,
+		url = /test_yii/index.php?r=site/ajaxForm,
+		referrer = http://test.dev/test_yii/index.php?r=site/contact"
     },
     "9c7cc7be": {
       "resource": "/test_yii/assets/fbf1b54a/resource_smart_load.js",
       "hash": "9c7cc7be",
-      "source": "2015-02-08 23:14:30,\r\nGET,\r\nurl = /test_yii/index.php?r=site/ajaxForm,\r\nreferrer = http://test.dev/test_yii/index.php?r=site/contact"
+      "source": "2015-02-08 23:14:30,
+		GET,
+		url = /test_yii/index.php?r=site/ajaxForm,
+		referrer = http://test.dev/test_yii/index.php?r=site/contact"
     },
     "ecd7b644": {
       "resource": "/test_yii/assets/62fbda6e/jui/js/jquery-ui.min.js",
       "hash": "ecd7b644",
-      "source": "2015-02-08 23:14:30,\r\nGET,\r\nurl = /test_yii/index.php?r=site/ajaxForm,\r\nreferrer = http://test.dev/test_yii/index.php?r=site/contact"
+      "source": "2015-02-08 23:14:30,
+		GET,
+		url = /test_yii/index.php?r=site/ajaxForm,
+		referrer = http://test.dev/test_yii/index.php?r=site/contact"
     },
     "5e030b8c": {
       "resource": "jQuery('#yw0').tabs({'collapsible':true});",
       "hash": "5e030b8c",
-      "source": "2015-02-08 23:14:30,\r\nGET,\r\nurl = /test_yii/index.php?r=site/ajaxForm,\r\nreferrer = http://test.dev/test_yii/index.php?r=site/contact"
+      "source": "2015-02-08 23:14:30,
+		GET,
+		url = /test_yii/index.php?r=site/ajaxForm,
+		referrer = http://test.dev/test_yii/index.php?r=site/contact"
     },
     "5ce96349": {
-      "resource": "(function ($) {   // yii-resource-smart-load extension\r\nwindow.yiiResourceSmartLoad.initExtension({\"...",
+      "resource": "(function ($) {   // yii-resource-smart-load extension
+        window.yiiResourceSmartLoad.initExtension({\"...",
       "hash": "5ce96349",
-      "source": "2015-02-08 23:14:30,\r\nGET,\r\nurl = /test_yii/index.php?r=site/ajaxForm,\r\nreferrer = http://test.dev/test_yii/index.php?r=site/contact"
+      "source": "2015-02-08 23:14:30,
+		GET,
+		url = /test_yii/index.php?r=site/ajaxForm,
+		referrer = http://test.dev/test_yii/index.php?r=site/contact"
+    },
+    "d60b9939": {
+      "resource": "jQuery('#contact-form').yiiactiveform({'validateOnSubmit':true,'attributes':[{'id':'ContactForm_name...",
+      "hash": "d60b9939",
+      "source": "2015-02-08 23:29:09,
+		GET/AJAX,
+		url = /test_yii/index.php?r=site/contact,
+		referrer = http://test.dev/test_yii/index.php?r=site/ajaxForm"
     }
   }
 ```
