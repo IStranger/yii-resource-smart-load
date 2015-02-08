@@ -116,7 +116,7 @@ You will need to manually configure disabling of resources on certain pages (wit
 Alternatively, you can configure exclusion list of resources:
 
 ```php
-    alwaysReloadableResources' => array('jquery.yiiactiveform.js')  // default = array()
+    'alwaysReloadableResources' => array('jquery.yiiactiveform.js')  // default = array()
 ```
 
 These resources always will be loaded on client. Each resource can be presented: 
