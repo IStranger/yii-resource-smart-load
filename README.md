@@ -44,8 +44,12 @@ and browser not to accept cookies. However, we assume the probability of such ev
     'clientScript' => array(
         'class' => 'ext.resourcesmartload.RSmartLoadClientScript',
 
-        // Hashing method for resource names ('crc32b' or 'md5')
-        // 'hashMethod' => 'crc32b', // default = 'md5'
+        // Hashing method for resource names, see possible values: http://php.net/manual/en/function.hash.php#104987
+        // 'hashMethod'                => 'md5', // default = 'crc32b'
+        
+        // Types of resources, that will be tracked by current extension. If =null, include all resource types:
+        // array('jsFile', 'cssFile', 'jsInline', 'cssInline')
+        // 'resourceTypes'             => array('jsFile', 'jsInline'), // default = null
 
         // Enable log on server and client side (debug mode)
         // 'enableLog' => true, // default = false
