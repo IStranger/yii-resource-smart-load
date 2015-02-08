@@ -7,7 +7,7 @@
  * @author  G.Azamat <m@fx4web.com>
  * @link    http://fx4.ru/
  * @link    https://github.com/IStranger/yii-resource-smart-load
- * @version 0.11 (2015-02-07)
+ * @version 0.2 (2015-02-08)
  * @since   1.1.14
  */
 class RSmartLoadHelper
@@ -44,13 +44,15 @@ class RSmartLoadHelper
     /**
      * Returns a new array built using a callback.
      * <code>
-     * // array
-     * $array=A::createByFn($array,
-     *      function($key,$item) {{return [$key.' '.count($item),$item];});
-     * // $array=['key1 cnt1'=>$item1,'key1 cnt2'=>$item2,...];
-     * // if array of objects
-     * $objects=A::createByFn($objects,
-     *      function() {{return [$this->name.'-'.$this->id,$this];});
+     *
+     * $array = A::createByFn($array, function($key,$item) {  // array
+     *      return [$key.' '.count($item), $item];
+     * });
+     * // Result: $array = ['key1 cnt1'=>$item1,'key1 cnt2'=>$item2,...];
+     *
+     * $objects = A::createByFn($objects, function() {    // if array of objects
+     *      return [$this->name.'-'.$this->id, $this];
+     * });
      * </code>
      *
      * @param  array    $array
