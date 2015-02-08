@@ -130,33 +130,9 @@ For example:
 ```javascript
 yiiResourceSmartLoad.resources = 
   {
-    "55eb35cb": {
-      "resource": "/test_yii/assets/62fbda6e/jquery.js",
-      "hash": "55eb35cb",
-      "source": "2015-02-08 23:14:30,
-		GET,
-		url = /test_yii/index.php?r=site/ajaxForm,
-		referrer = http://test.dev/test_yii/index.php?r=site/contact"
-    },
     "fd425af9": {
       "resource": "/test_yii/assets/62fbda6e/jquery.maskedinput.js",
       "hash": "fd425af9",
-      "source": "2015-02-08 23:14:30,
-		GET,
-		url = /test_yii/index.php?r=site/ajaxForm,
-		referrer = http://test.dev/test_yii/index.php?r=site/contact"
-    },
-    "9c7cc7be": {
-      "resource": "/test_yii/assets/fbf1b54a/resource_smart_load.js",
-      "hash": "9c7cc7be",
-      "source": "2015-02-08 23:14:30,
-		GET,
-		url = /test_yii/index.php?r=site/ajaxForm,
-		referrer = http://test.dev/test_yii/index.php?r=site/contact"
-    },
-    "ecd7b644": {
-      "resource": "/test_yii/assets/62fbda6e/jui/js/jquery-ui.min.js",
-      "hash": "ecd7b644",
       "source": "2015-02-08 23:14:30,
 		GET,
 		url = /test_yii/index.php?r=site/ajaxForm,
