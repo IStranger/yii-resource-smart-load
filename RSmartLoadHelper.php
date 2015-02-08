@@ -126,7 +126,7 @@ class RSmartLoadHelper
      */
     private static function _getCookieValue($cookieName, $default = null, $attribute = 'value')
     {
-        return CHtml::value(Yii::app()->request->cookies, $cookieName . '.' . $attribute, $default);
+        return CHtml::value(Yii::app()->request->cookies->toArray(), $cookieName . '.' . $attribute, $default);
     }
 
     /**
