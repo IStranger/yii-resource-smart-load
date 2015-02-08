@@ -7,16 +7,6 @@ This extension for yii 1.1.x prevent reload resources, which already exist on cl
 + PHP 5.4.0+. Theoretically should work on 5.3, but not tested.
 + YiiFramework 1.1.14+
 
-
-Note:
-
-    The extension is under active development and requires a good refactoring
-    (especially client side). This extension works well, but before use
-    on production version of your website, you must carefully test it (the tests
-    will come later). It is also planned deep change of algorithm that eliminates
-    many of the limitations of this extension (see below). Therefore it is
-    possible instead of refactoring most of the code will be deleted.
-
 ## Features
 
 + Prevent reload of js-script files
@@ -24,7 +14,6 @@ Note:
 
 ## Limitations
 
-+ Cannot prevent reload inline blocks of js/css (we will try to eliminate in the new version).
 + Increases incoming traffic (from client to server), because extension uses cookie and http headers.
 This is especially important for sites with a large number of included resource files.
 This can be adjusted by changing the hash method: <b>crc32b</b> takes less size than <b>md5</b> (see options of extension).
