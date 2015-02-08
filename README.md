@@ -186,14 +186,14 @@ the files.
 
 ## Change Log
 
-### [v0.2-beta](https://github.com/IStranger/yii-resource-smart-load/releases/tag/v0.2-beta) (2014-02-08) ###
+### [v0.2-beta](https://github.com/IStranger/yii-resource-smart-load/releases/tag/v0.2-beta) (2015-02-08) ###
 * Changed base algorithm of extension
 * Code refactored and well optimized
 * Added prevent reload of CSS files
 * Added prevent reload of CSS inline blocks
 * Extended possibility configuration of resources disabling
 
-### [v0.1-beta](https://github.com/IStranger/yii-resource-smart-load/releases/tag/v0.1-beta) (2014-02-04) ###
+### [v0.1-beta](https://github.com/IStranger/yii-resource-smart-load/releases/tag/v0.1-beta) (2015-02-04) ###
 * Initial release
 * Prevent reload of js-script files
 * Prevent reload of css-style files (and other link files like *.ico)
