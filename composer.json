@@ -1,5 +1,5 @@
 {
-    "name"       : "istranger/resource-smart-load",
+    "name"       : "istranger/yii-resource-smart-load",
     "description": "The extension for prevent reload resources, which already exist on client",
     "keywords"   : ["resources", "reload", "scripts", "js", "CClientScript", "yii", "prevent"],
     "homepage"   : "https://github.com/IStranger/yii-resource-smart-load#readme",

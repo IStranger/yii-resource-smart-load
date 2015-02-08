@@ -31,8 +31,9 @@ and browser not to accept cookies. However, we assume the probability of such ev
 'components' => array(
     // ...
     'clientScript' => array(
-        'class' => 'ext.resource-smart-load.RSmartLoadClientScript',
-
+        'class' => 'ext.yii-resource-smart-load.RSmartLoadClientScript',  // if installed manually
+        // 'class' => 'application.vendor.istranger.yii-resource-smart-load.RSmartLoadClientScript', // if installed via composer
+                    
         // Hashing method for resource names, see possible values: http://php.net/manual/en/function.hash.php#104987
         // 'hashMethod'                => 'md5', // default = 'crc32b'
         
