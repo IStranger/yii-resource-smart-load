@@ -145,7 +145,7 @@ class RSmartLoadClientScript extends CClientScript
     }
 
     /**
-     * Disables loading of all resource files.
+     * Disables loading of all resources.
      *
      * <b>ATTENTION!</b> Calling this method disables loading <u><b>all</b></u> resources,
      * even if they will registered after calling this method.
@@ -168,7 +168,7 @@ class RSmartLoadClientScript extends CClientScript
     }
 
     /**
-     * Disables loading of resource files, which already loaded on client. <br/>
+     * Disables loading of resources, which already loaded on client. <br/>
      * Used at AJAX requests. List of resource hashes obtained from "client" variable {@link Request::getClientVar}.
      *
      * <b>ATTENTION!</b> Calling this method disables loading <u><b>"client"</b></u> resources,
