@@ -173,14 +173,16 @@ To prevent reloading scripts you can use <a href="https://github.com/nlac/nlscli
 
 However, there are a few differences:
 
-* Extension used different algorithm: at AJAX request duplicated resource files are deleted on the client <b>after</b>
+* Extension used different algorithm: at AJAX request duplicated resource files are deleted on the client **after**
 receiving the content (not on the server, as in our realization). We assume that our approach is conceptually more correct.
 
 * Our realization don't deletes (intentionally) the resources, which included directly in html code
 (without registering through ClientScript). In this case, we assume that these resources are very necessary.
 
-* nlsclientscript don't deletes duplicate CSS files. But there is nothing wrong, because most browsers will not re-load
+* nlsclientscript don't deletes duplicate CSS files. But there is nothing wrong, because most browsers will not reload
 the files.
+
+* nlsclientscript cannot prevent reload of js/css inline blocks.
 
 
 
