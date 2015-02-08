@@ -23,7 +23,7 @@ and browser not to accept cookies. However, we assume the probability of such ev
 
 ## Usage
 
-+ Extract files under <code> protected/extensions/resourcesmartload</code>.
++ Extract files under <code> protected/extensions/resource-smart-load</code>.
 + Add in config file (by default config/main.php):
 
 ```php
@@ -31,7 +31,7 @@ and browser not to accept cookies. However, we assume the probability of such ev
 'components' => array(
     // ...
     'clientScript' => array(
-        'class' => 'ext.resourcesmartload.RSmartLoadClientScript',
+        'class' => 'ext.resource-smart-load.RSmartLoadClientScript',
 
         // Hashing method for resource names, see possible values: http://php.net/manual/en/function.hash.php#104987
         // 'hashMethod'                => 'md5', // default = 'crc32b'

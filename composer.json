@@ -1,8 +1,8 @@
 {
-    "name"       : "IStranger/resourcesmartload",
+    "name"       : "istranger/resource-smart-load",
     "description": "The extension for prevent reload resources, which already exist on client",
     "version"    : "0.1.0-beta",
-    "keywords"   : ["resources", "prevent reload", "scripts", "resource extension"],
+    "keywords"   : ["resources", "reload", "scripts", "js", "CClientScript", "yii", "prevent"],
     "homepage"   : "https://github.com/IStranger/yii-resource-smart-load#readme",
     "type"       : "library",
     "license"    : "MIT",
