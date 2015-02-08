@@ -23,7 +23,7 @@ and browser not to accept cookies. However, we assume the probability of such ev
 
 ## Usage
 
-+ Extract files under <code> protected/extensions/resource-smart-load</code>.
++ Extract files under <code> protected/extensions/yii-resource-smart-load</code>.
 + Add in config file (by default config/main.php):
 
 ```php
