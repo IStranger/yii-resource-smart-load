@@ -31,41 +31,29 @@ and browser not to accept cookies. However, we assume the probability of such ev
 'components' => array(
     // ...
     'clientScript' => array(
-        /**
-         * Path of main class
-         */ 
-        // if installed manually: 
+        // Path of main class: 
+            // -- if installed manually: 
         'class' => 'ext.yii-resource-smart-load.RSmartLoadClientScript', 
-        // if installed via composer 
+            // -- if installed via composer: 
         // 'class' => 'application.vendor.istranger.yii-resource-smart-load.RSmartLoadClientScript',  
                     
-        /** 
-         * Hashing method for resource names,
-         * see possible values: http://php.net/manual/en/function.hash.php#104987 *
-         */
+        // Hashing method for resource names,
+        // see possible values: http://php.net/manual/en/function.hash.php#104987 
         // 'hashMethod' => 'md5', // default = 'crc32b'
         
-        /** 
-         * Types of resources, that will be tracked by current extension. 
-         * If =null, include all resource types: 
-         * array('jsFile', 'cssFile', 'jsInline', 'cssInline')
-         */
+        // Types of resources, that will be tracked by current extension. 
+        // If =null, include all resource types: 
+        // array('jsFile', 'cssFile', 'jsInline', 'cssInline')
         // 'resourceTypes' => array('jsFile', 'jsInline'), // default = null
 
-        /** 
-         * Enable log on server and client side (debug mode)
-         */
+        // Enable log on server and client side (debug mode)
         // 'enableLog' => true, // default = false
 
-        /**
-         * Activate "smart" disabling of resources on all pages
-         */
+        // Activate "smart" disabling of resources on all pages
         // 'activateOnAllPages' => true // default = true
         
-        /** 
-         * List of resources, that always should be loaded on client 
-         * (by name, hash, or full URL)
-         */
+        // List of resources, that always should be loaded on client 
+        // (by name, hash, or full URL)
         // 'alwaysReloadableResources' => array('jquery.yiiactiveform.js')  // default = array()
     )
     // ...
