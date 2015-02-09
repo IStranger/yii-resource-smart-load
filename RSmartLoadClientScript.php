@@ -158,12 +158,8 @@ class RSmartLoadClientScript extends CClientScript
     public function disableAllResources(array $types = null)
     {
         $self = $this;
-        $types = $types ?: static::$resourceTypesAll;
         $this->attachEventHandler(self::EVENT_AFTER_UNIFY_SCRIPTS, function ($event) use ($self, $types) {
-            in_array($self::RESOURCE_TYPE_JS_FILE, $types) && $self->excludeJSFiles(array('*'));
-            in_array($self::RESOURCE_TYPE_JS_INLINE, $types) && $self->excludeJSInline(array('*'));
-            in_array($self::RESOURCE_TYPE_CSS_FILE, $types) && $self->excludeCSSFiles(array('*'));
-            in_array($self::RESOURCE_TYPE_CSS_INLINE, $types) && $self->excludeCSSInline(array('*'));
+            $self->excludeResourcesByType(array('*'), $types);
         });
     }
 
@@ -182,14 +178,32 @@ class RSmartLoadClientScript extends CClientScript
     public function disableLoadedResources(array $types = null)
     {
         $self = $this;
-        $types = $types ?: static::$resourceTypesAll;
         $this->attachEventHandler(self::EVENT_AFTER_UNIFY_SCRIPTS, function ($event) use ($self, $types) {
             $hashList = $self->getLoadedResourcesHashes();
-            in_array($self::RESOURCE_TYPE_JS_FILE, $types) && $self->excludeJSFiles($hashList);
-            in_array($self::RESOURCE_TYPE_JS_INLINE, $types) && $self->excludeJSInline($hashList);
-            in_array($self::RESOURCE_TYPE_CSS_FILE, $types) && $self->excludeCSSFiles($hashList);
-            in_array($self::RESOURCE_TYPE_CSS_INLINE, $types) && $self->excludeCSSInline($hashList);
+            $self->excludeResourcesByType($hashList, $types);
         });
+    }
+
+    /**
+     * Excludes given resources from arrays {@link scriptFiles}, {@link cssFiles}, {@link css} and {@link scripts}
+     * (depending on given types). <br/>
+     *
+     * @param string[] $excludeList  List of resources, to be excluded.
+     *                               Format of array see in corresponding specific methods.
+     * @param string[] $types        Types of resources, that should be disabled.
+     *                               Possible values see {@link resourceTypesAll}.
+     * @see excludeJSFiles
+     * @see excludeJSInline
+     * @see excludeCSSFiles
+     * @see excludeCSSInline
+     */
+    protected function excludeResourcesByType(array $excludeList, array $types = null)
+    {
+        $types = $types ?: static::$resourceTypesAll;
+        in_array(self::RESOURCE_TYPE_JS_FILE, $types) && $this->excludeJSFiles($excludeList);
+        in_array(self::RESOURCE_TYPE_JS_INLINE, $types) && $this->excludeJSInline($excludeList);
+        in_array(self::RESOURCE_TYPE_CSS_FILE, $types) && $this->excludeCSSFiles($excludeList);
+        in_array(self::RESOURCE_TYPE_CSS_INLINE, $types) && $this->excludeCSSInline($excludeList);
     }
 
 
