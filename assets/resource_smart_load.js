@@ -225,7 +225,7 @@
                 $.each(arguments, function (key, val) { // copy values from "pseudo array" to normal array
                     args.push(val);
                 });
-                console.log.apply(this, args);
+                console.log.apply(console, args);
             }
         }
     };
